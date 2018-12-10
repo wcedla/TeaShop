@@ -24,6 +24,7 @@ import com.example.wcedla.selltea.adapter.MyFrameAdapter;
 import com.example.wcedla.selltea.fragment.BuyCarFragment;
 import com.example.wcedla.selltea.fragment.GoodsFragment;
 import com.example.wcedla.selltea.fragment.LoginFragment;
+import com.example.wcedla.selltea.fragment.TeaSortFragment;
 import com.example.wcedla.selltea.tool.HttpTool;
 import com.example.wcedla.selltea.tool.JsonTool;
 import com.example.wcedla.selltea.tool.SystemTool;
@@ -68,13 +69,17 @@ public class MainActivity extends AppCompatActivity {
         isLogin=loginPreference.getBoolean("isLogin",false);
         if(isLogin)
         {
-            for (int i = 0; i < 4; i++) {
-                GoodsFragment goodsFragment = GoodsFragment.newInstance();
-                if (i == 2) {
-                    fragmentList.add(BuyCarFragment.newInstance());
-                } else
-                    fragmentList.add(goodsFragment);
-            }
+            fragmentList.add(GoodsFragment.newInstance());
+            fragmentList.add(TeaSortFragment.newInstance());
+            fragmentList.add(BuyCarFragment.newInstance());
+            fragmentList.add(GoodsFragment.newInstance());
+//            for (int i = 0; i < 4; i++) {
+//                GoodsFragment goodsFragment = GoodsFragment.newInstance();
+//                if (i == 2) {
+//                    fragmentList.add();
+//                } else
+//                    fragmentList.add(goodsFragment);
+//            }
         }
         else
         {
