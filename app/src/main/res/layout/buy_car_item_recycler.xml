@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="15dp"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/car_item_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/checkbox_background"
+                android:button="@null" />
+
+            <ImageView
+                android:id="@+id/buy_car_adapter_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/puer3" />
+
+            <TextView
+                android:id="@+id/buy_car_adapter_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:text="小青柑宫廷普洱熟茶新会特技200g 罐装正宗熟橘桔普茶叶"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/hot_grid_drawable"
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <Button
+                    android:id="@+id/car_number_sub"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/number_select_left"
+                    android:text="-"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray" />
+
+                <EditText
+                    android:id="@+id/car_buy_number"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:digits="0123456789"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:maxLines="1"
+                    android:text="1"
+                    android:textAlignment="center" />
+
+                <View
+                    android:layout_width="1sp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray" />
+
+                <Button
+                    android:id="@+id/car_number_add"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/number_select_right"
+                    android:text="+"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/buy_car_adapter_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:gravity="end"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:text="¥668"/>
+
+        </LinearLayout>
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1sp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="#b3b3b3"/>-->
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
