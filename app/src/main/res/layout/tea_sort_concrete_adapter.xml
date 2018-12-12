@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <GridView
-        android:id="@+id/tea_concrete_item_gridview"
+    <ImageView
+        android:id="@+id/tea_type_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/sort_image_background"
+        android:src="@drawable/puer3"
+        android:padding="1dp"/>
+
+    <TextView
+        android:id="@+id/tea_type_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:text="普洱"/>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.wcedla.selltea.tool;
 
 import android.util.Log;
 
+import com.example.wcedla.selltea.adapter.TeaTypeBean;
 import com.example.wcedla.selltea.database.BannerHotImageTable;
 import com.example.wcedla.selltea.gson.AdressDetial;
 import com.example.wcedla.selltea.gson.AdressGson;
@@ -177,4 +178,49 @@ public class JsonTool {
         }
     }
 
+    public static List<String> getTeaSortName(String jsonData)
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            if (jsonObject.has("status")) {
+                return new ArrayList<>();
+            } else {
+                List<String> teaSortNameList=new ArrayList<>();
+                JSONArray jsonArray=jsonObject.getJSONArray("teasortname");
+                for(int i=0;i<jsonArray.length();i++)
+                {
+                    JSONObject dataObject=(JSONObject) jsonArray.get(i);
+                    teaSortNameList.add(dataObject.getString("sortname"));
+                    //Log.d(TAG, "是啥"+dataObject.getString("sortname"));
+                }
+                return teaSortNameList;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static List<TeaTypeBean> getTeaType(String jsonData)
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            if (jsonObject.has("status")) {
+                return new ArrayList<>();
+            } else {
+                List<TeaTypeBean> teaTypeBeanList=new ArrayList<>();
+                JSONArray jsonArray=jsonObject.getJSONArray("teatype");
+                for(int i=0;i<jsonArray.length();i++)
+                {
+                    JSONObject dataObject=(JSONObject) jsonArray.get(i);
+                    TeaTypeBean teaTypeBean=new TeaTypeBean(dataObject.getString("name"),dataObject.getString("img"));
+                    teaTypeBeanList.add(teaTypeBean);
+                }
+                return teaTypeBeanList;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
 }
