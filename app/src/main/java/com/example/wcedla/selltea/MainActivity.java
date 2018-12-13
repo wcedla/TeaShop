@@ -24,6 +24,7 @@ import com.example.wcedla.selltea.adapter.MyFrameAdapter;
 import com.example.wcedla.selltea.fragment.BuyCarFragment;
 import com.example.wcedla.selltea.fragment.GoodsFragment;
 import com.example.wcedla.selltea.fragment.LoginFragment;
+import com.example.wcedla.selltea.fragment.MeFragment;
 import com.example.wcedla.selltea.fragment.TeaSortFragment;
 import com.example.wcedla.selltea.tool.HttpTool;
 import com.example.wcedla.selltea.tool.JsonTool;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentList.add(GoodsFragment.newInstance());
             fragmentList.add(TeaSortFragment.newInstance());
             fragmentList.add(BuyCarFragment.newInstance());
-            fragmentList.add(GoodsFragment.newInstance());
+            fragmentList.add(MeFragment.newInstance());
 //            for (int i = 0; i < 4; i++) {
 //                GoodsFragment goodsFragment = GoodsFragment.newInstance();
 //                if (i == 2) {
@@ -83,13 +84,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            for (int i = 0; i < 4; i++) {
-                GoodsFragment goodsFragment = GoodsFragment.newInstance();
-                if (i == 2||i==3) {
-                    fragmentList.add(LoginFragment.newInstance(5));
-                } else
-                    fragmentList.add(goodsFragment);
-            }
+            fragmentList.add(GoodsFragment.newInstance());
+            fragmentList.add(TeaSortFragment.newInstance());
+            fragmentList.add(LoginFragment.newInstance(5));
+            fragmentList.add(LoginFragment.newInstance(5));
         }
 
         myFrameAdapter = new MyFrameAdapter(getSupportFragmentManager(), fragmentList);
@@ -144,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     toolbar.setVisibility(View.VISIBLE);
                     barTitle.setText("购物车");
                 } else if (i == 3) {
+                    toolbar.setVisibility(View.VISIBLE);
                     barTitle.setText("我的");
                 } else {
                     if (getSupportActionBar() != null) {
@@ -212,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         outer.fragmentList.remove(2);
                         outer.fragmentList.add(2, BuyCarFragment.newInstance());
+                        outer.fragmentList.remove(3);
+                        outer.fragmentList.add(3, MeFragment.newInstance());
                         outer.myFrameAdapter = new MyFrameAdapter(outer.getSupportFragmentManager(), outer.fragmentList);
                         outer.viewPager.setAdapter(outer.myFrameAdapter);
                         outer.viewPager.setCurrentItem(0);

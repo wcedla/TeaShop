@@ -223,4 +223,22 @@ public class JsonTool {
             return new ArrayList<>();
         }
     }
+
+    public static int getEditPasswordStatus(String jsonData)
+    {
+        try {
+            JSONObject jsonObject=new JSONObject(jsonData);
+            String data=jsonObject.getString("status");
+            //Log.d(TAG, "内容"+data);
+            if(data.equals("ok"))
+                return  0;
+            else if(data.equals("incorrect"))
+                return -1;
+            else
+                return 1;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return 1;
+        }
+    }
 }

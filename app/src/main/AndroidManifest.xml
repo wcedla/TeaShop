@@ -29,7 +29,9 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ConfirmToBuyActivity" />
         <activity android:name=".AdressManageActivity" />
-        <activity android:name=".AdressEditActivity"></activity>
+        <activity android:name=".AdressEditActivity" />
+        <activity android:name=".EditPasswordActivity" />
+        <activity android:name=".TeaBIllActivity"></activity>
     </application>
 
 </manifest>
