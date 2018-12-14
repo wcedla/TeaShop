@@ -2,10 +2,13 @@ package com.example.wcedla.selltea.tool;
 
 import android.util.Log;
 
+import com.example.wcedla.selltea.adapter.AllBillDetialBean;
 import com.example.wcedla.selltea.adapter.TeaTypeBean;
 import com.example.wcedla.selltea.database.BannerHotImageTable;
 import com.example.wcedla.selltea.gson.AdressDetial;
 import com.example.wcedla.selltea.gson.AdressGson;
+import com.example.wcedla.selltea.gson.AllBillDetial;
+import com.example.wcedla.selltea.gson.AllBillGson;
 import com.example.wcedla.selltea.gson.BuyCarDetial;
 import com.example.wcedla.selltea.gson.BuyCarGson;
 import com.example.wcedla.selltea.gson.GoodsDetialGson;
@@ -239,6 +242,23 @@ public class JsonTool {
         } catch (JSONException e) {
             e.printStackTrace();
             return 1;
+        }
+    }
+
+    public static List<AllBillDetial> getBillDetial(String jsonData)
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            if (jsonObject.has("status")) {
+                return new ArrayList<>();
+            } else {
+                Gson gson = new Gson();
+                AllBillGson allBillGson = gson.fromJson(jsonData, AllBillGson.class);
+                return allBillGson.allBillDetialList;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

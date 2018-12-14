@@ -48,6 +48,7 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
     int count=0;
     float price=0;
     String idStr="";
+    String countStr="";
     LinearLayout adressEmptylayout;
     LinearLayout adressShowLayout;
     TextView buyAdressName;
@@ -291,12 +292,13 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
             price+=Float.valueOf(confirmToBuyBean.getTotalPrice());
             layoutForAdd.addView(viewForAdd);
             idStr+=confirmToBuyBean.getId()+"~";
+            countStr+=confirmToBuyBean.getBuyCount()+"~";
         }
         billTotalPrice.setText("¥"+String.valueOf(price));
         billTotalCount.setText("共"+String.valueOf(count)+"件商品，小计:");
         submitTotalCount.setText("共"+String.valueOf(count)+"件商品，合计:");
         getSubmitTotalPrice.setText("¥"+String.valueOf(price));
-        Log.d("wcedla", "啥"+idStr);
+        Log.d("wcedla", "啥"+idStr+","+countStr);
     }
 
     private void insetNewItem() {
@@ -312,7 +314,7 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date currentDate = new Date(System.currentTimeMillis());
         String buildTimeForAdd=format.format(currentDate);
-        String sqlStr="insert into buybill values('"+adressNameForAdd+"','"+idStr+"','0.0','"+buyMessageForAdd+"','"+billNoForAdd+"','"+buildTimeForAdd+"','0')";
+        String sqlStr="insert into buybill values('"+adressNameForAdd+"','"+idStr+"','"+countStr+"','0.0','"+buyMessageForAdd+"','"+billNoForAdd+"','"+buildTimeForAdd+"','0')";
         Log.d("wcedla", "获得:"+sqlStr);
         String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
         HttpTool.doHttpRequest(url, new Callback() {

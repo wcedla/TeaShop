@@ -99,8 +99,10 @@ public class GoodsDetialActivity extends AppCompatActivity {
                 } else {
                     Intent confireToBuyIntent = new Intent(GoodsDetialActivity.this, ConfirmToBuyActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("id",goodsId);
-                    bundle.putString("count",buyNumber.getText().toString());
+//                    bundle.putString("id",goodsId);
+//                    bundle.putString("count",buyNumber.getText().toString());
+                    bundle.putString("id","1~4");
+                    bundle.putString("count","5~3");
                     confireToBuyIntent.putExtras(bundle);
                     startActivity(confireToBuyIntent);
                 }

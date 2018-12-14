@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,31 +23,27 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/bill_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:gravity="center"
-                    android:text="2018-12-13 22:44"
+                    android:textSize="13sp"
+                    android:text="订单编号:131270898500877"
                     android:textAlignment="center" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center"
-                    android:text="订单编号：124578963"
-                    android:textAlignment="center" />
-
-                <TextView
+                    android:id="@+id/bill_flag"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="end"
+                    android:textSize="13sp"
                     android:text="代付款"
-                    android:textAlignment="center" />
+                    android:textAlignment="textEnd" />
 
             </LinearLayout>
 
@@ -55,62 +53,52 @@
                 android:background="#b9b9b9" />
 
             <LinearLayout
+                android:id="@+id/all_bill_for_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/confim_to_buy_img"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/puer3" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/confim_to_buy_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="小青柑宫廷普洱熟茶新会特技200g 罐装正宗熟橘桔普茶叶" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/confim_to_buy_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
-                            android:gravity="center"
-                            android:text="x1" />
-
-                        <TextView
-                            android:id="@+id/confirm_to_buy_total_price"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="20dp"
-                            android:gravity="end"
-                            android:text="¥589"
-                            android:textAlignment="textEnd" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/all_bill_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="17sp"
+                    android:textColor="?attr/colorPrimary"
+                    android:layout_centerVertical="true"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:text="¥2584"/>
+
+                <TextView
+                    android:id="@+id/bill_count_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/all_bill_total_price"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="共两件商品，合计:"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#b9b9b9" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -119,7 +107,7 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:id="@+id/bill_second_job"
+                    android:id="@+id/a_g"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -134,7 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/bill_second_job"
+                    android:layout_toStartOf="@id/a_g"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:layout_marginEnd="20dp"
@@ -142,6 +130,8 @@
                     android:text="取消订单"/>
 
             </RelativeLayout>
+
+
 
         </LinearLayout>
 
