@@ -201,6 +201,7 @@
                 android:background="#dedede" />
 
             <LinearLayout
+                android:id="@+id/collection_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -213,9 +214,10 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_collection" />
+                    android:src="@drawable/goods_detial_collection_selecter" />
 
                 <TextView
+                    android:id="@+id/collection_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

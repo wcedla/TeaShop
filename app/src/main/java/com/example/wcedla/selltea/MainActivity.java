@@ -21,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wcedla.selltea.adapter.MyFrameAdapter;
+import com.example.wcedla.selltea.communication.ActivityEventManger;
+import com.example.wcedla.selltea.communication.Event;
+import com.example.wcedla.selltea.communication.EventBean;
 import com.example.wcedla.selltea.fragment.BuyCarFragment;
 import com.example.wcedla.selltea.fragment.GoodsFragment;
 import com.example.wcedla.selltea.fragment.LoginFragment;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     MyFrameAdapter myFrameAdapter;
     public static Context context;
     boolean isLogin=false;
+    Toolbar toolbar;
+    public static ActivityEventManger activityEventManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         SystemTool.setNavigationBarStatusBarTranslucent(this);
         setContentView(R.layout.activity_main);
         context=MainActivity.this;
-        final Toolbar toolbar = findViewById(R.id.login_bar);
+        activityEventManger=ActivityEventManger.newEventManger(event);
+        toolbar= findViewById(R.id.login_bar);
         final TextView barTitle = findViewById(R.id.bar_title);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -216,10 +222,33 @@ public class MainActivity extends AppCompatActivity {
                         outer.myFrameAdapter = new MyFrameAdapter(outer.getSupportFragmentManager(), outer.fragmentList);
                         outer.viewPager.setAdapter(outer.myFrameAdapter);
                         outer.viewPager.setCurrentItem(0);
+                        outer.tabLayout.getTabAt(0).select();
+                        outer.toolbar.setVisibility(View.GONE);
                         break;
 
                 }
             }
         }
     }
+
+
+    Event event=new Event() {
+        @Override
+        public void whatToDo(EventBean eventBean) {
+            switch (eventBean.what)
+            {
+                case 1:
+                    fragmentList.remove(2);
+                    fragmentList.add(2, LoginFragment.newInstance(5));
+                    fragmentList.remove(3);
+                    fragmentList.add(3, LoginFragment.newInstance(5));
+                    myFrameAdapter = new MyFrameAdapter(getSupportFragmentManager(), fragmentList);
+                    viewPager.setAdapter(myFrameAdapter);
+                    viewPager.setCurrentItem(0);
+                    tabLayout.getTabAt(0).select();
+                    toolbar.setVisibility(View.GONE);
+                    break;
+            }
+        }
+    };
 }

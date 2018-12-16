@@ -74,7 +74,11 @@ public class TeaBillShowAdapter extends RecyclerView.Adapter<TeaBillShowAdapter.
                     billOptions.pay(viewHolder.billNo.getText().toString().substring(5),viewHolder.getAdapterPosition());
                 } else
                 {
-                    Log.d(TAG, "查看订单");
+                    Intent showDetialIntent=new Intent(context,BillDetialShowActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("billNo",viewHolder.billNo.getText().toString().substring(5));
+                    showDetialIntent.putExtras(bundle);
+                    context.startActivity(showDetialIntent);
                 }
             }
         });
@@ -84,7 +88,6 @@ public class TeaBillShowAdapter extends RecyclerView.Adapter<TeaBillShowAdapter.
                 Intent showDetialIntent=new Intent(context,BillDetialShowActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putString("billNo",viewHolder.billNo.getText().toString().substring(5));
-//                bundle.putString("billNo","131277637430247");
                 showDetialIntent.putExtras(bundle);
                 context.startActivity(showDetialIntent);
             }

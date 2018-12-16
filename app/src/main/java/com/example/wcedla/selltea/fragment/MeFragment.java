@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +21,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.wcedla.selltea.AdressManageActivity;
 import com.example.wcedla.selltea.EditPasswordActivity;
+import com.example.wcedla.selltea.MainActivity;
 import com.example.wcedla.selltea.R;
 import com.example.wcedla.selltea.TeaBIllActivity;
 import com.example.wcedla.selltea.communication.ActivityEventManger;
@@ -43,6 +46,12 @@ public class MeFragment extends Fragment {
     String userName;
     TextView meUserName;
     RelativeLayout allBillRoot;
+    LinearLayout noPayLayout;
+    LinearLayout noMailLayout;
+    LinearLayout noConfirmLayout;
+    LinearLayout billFinishLayout;
+    RelativeLayout meAdressEdit;
+    Button logOutButton;
 
     @Override
     public void onAttach(Context context) {
@@ -97,7 +106,75 @@ public class MeFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "全部订单");
                 Intent allBillShowIntent=new Intent(myActivity,TeaBIllActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("flag",0);
+                allBillShowIntent.putExtras(bundle);
                 myActivity.startActivity(allBillShowIntent);
+            }
+        });
+        noPayLayout=view.findViewById(R.id.me_not_pay_layout);
+        noPayLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent allBillShowIntent=new Intent(myActivity,TeaBIllActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("flag",1);
+                allBillShowIntent.putExtras(bundle);
+                myActivity.startActivity(allBillShowIntent);
+            }
+        });
+        noMailLayout=view.findViewById(R.id.me_no_mail_layout);
+        noMailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent allBillShowIntent=new Intent(myActivity,TeaBIllActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("flag",2);
+                allBillShowIntent.putExtras(bundle);
+                myActivity.startActivity(allBillShowIntent);
+            }
+        });
+        noConfirmLayout=view.findViewById(R.id.no_confirm_bill_layout);
+        noConfirmLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent allBillShowIntent=new Intent(myActivity,TeaBIllActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("flag",3);
+                allBillShowIntent.putExtras(bundle);
+                myActivity.startActivity(allBillShowIntent);
+            }
+        });
+        billFinishLayout=view.findViewById(R.id.bill_finish_layout);
+        billFinishLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent allBillShowIntent=new Intent(myActivity,TeaBIllActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt("flag",4);
+                allBillShowIntent.putExtras(bundle);
+                myActivity.startActivity(allBillShowIntent);
+            }
+        });
+        meAdressEdit=view.findViewById(R.id.me_adress_edit);
+        meAdressEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent adressintent=new Intent(myActivity,AdressManageActivity.class);
+                myActivity.startActivity(adressintent);
+            }
+        });
+        logOutButton=view.findViewById(R.id.logout_btn);
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor loginEditor = myActivity.getSharedPreferences("login", MODE_PRIVATE).edit();
+                loginEditor.putBoolean("isLogin",false);
+                loginEditor.putString("username","null");
+                loginEditor.apply();
+                EventBean eventBean=new EventBean();
+                eventBean.what=1;
+                MainActivity.activityEventManger.callEvent(eventBean);
             }
         });
         return view;

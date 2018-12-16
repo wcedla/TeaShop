@@ -61,6 +61,10 @@ public class GoodsDetialActivity extends AppCompatActivity {
     Button sub;
     EditText buyNumber;
     String userName;
+    LinearLayout collectionLayout;
+    TextView collectionText;
+    ImageView collectionImg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class GoodsDetialActivity extends AppCompatActivity {
         SharedPreferences loginPreference = getSharedPreferences("login", MODE_PRIVATE);
         userName = loginPreference.getString("username", "");
         getGoodsDetial();
+        getCollectionStatus();
         Toast.makeText(this, "当前货物id" + goodsId, Toast.LENGTH_SHORT).show();
         goodsDetialShowRoot=findViewById(R.id.goods_detial_show_root);
         goodsDetialHideRoot=findViewById(R.id.goods_dedtial_hide_root);
@@ -84,6 +89,9 @@ public class GoodsDetialActivity extends AppCompatActivity {
         add = findViewById(R.id.goods_number_add);
         sub = findViewById(R.id.goods_number_sub);
         buyNumber= findViewById(R.id.goods_buy_number);
+        collectionLayout=findViewById(R.id.collection_layout);
+        collectionImg=findViewById(R.id.collection_img);
+        collectionText=findViewById(R.id.collection_text);
         buyNumberJob();
         NestedScrollView scrollView = findViewById(R.id.goods_detial_scroll);
         TextView buyNow = findViewById(R.id.buy_now);
@@ -99,10 +107,10 @@ public class GoodsDetialActivity extends AppCompatActivity {
                 } else {
                     Intent confireToBuyIntent = new Intent(GoodsDetialActivity.this, ConfirmToBuyActivity.class);
                     Bundle bundle = new Bundle();
-//                    bundle.putString("id",goodsId);
-//                    bundle.putString("count",buyNumber.getText().toString());
-                    bundle.putString("id","1~4");
-                    bundle.putString("count","5~3");
+                    bundle.putString("id",goodsId);
+                    bundle.putString("count",buyNumber.getText().toString());
+//                    bundle.putString("id","1~4");
+//                    bundle.putString("count","5~3");
                     confireToBuyIntent.putExtras(bundle);
                     startActivity(confireToBuyIntent);
                 }
@@ -111,7 +119,27 @@ public class GoodsDetialActivity extends AppCompatActivity {
         addToCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToCarJob();
+                SharedPreferences loginPreference = getSharedPreferences("login", MODE_PRIVATE);
+                boolean isLogin = loginPreference.getBoolean("isLogin", false);
+                if (!isLogin) {
+                    Intent loginIntent = new Intent(GoodsDetialActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                } else {
+                    addToCarJob();
+                }
+            }
+        });
+        collectionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //collectionImg.setImageResource(R.drawable.goods_detial_collection_selecter);
+                if(!collectionImg.isSelected()) {
+                    addGoodsCollection();
+
+                }else
+                {
+                    deleteGoodsCollection();
+                }
             }
         });
 
@@ -293,6 +321,150 @@ public class GoodsDetialActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(GoodsDetialActivity.this,"加入购车失败！",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void getCollectionStatus()
+    {
+        String url="http://192.168.191.1:8080/SqlServerMangerForAndroid/GoodsCollectionServlet?id="+goodsId;
+        HttpTool.doHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GoodsDetialActivity.this,"连接服务器失败！",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData=response.body().string();
+                String countStr="0";
+                try {
+                    JSONObject jsonObject=new JSONObject(responseData);
+                    Log.d(TAG, "查看"+jsonObject.toString());
+                    countStr=jsonObject.getString("count");
+                } catch (final JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GoodsDetialActivity.this,"解析失败！"+e,Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                if(Integer.valueOf(countStr)>0)
+                {
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           collectionImg.setSelected(true);
+                           collectionText.setText("取消收藏");
+                       }
+                   });
+                }
+                else
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            collectionImg.setSelected(false);
+                            collectionText.setText("收藏商品");
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }
+
+    private void addGoodsCollection()
+    {
+        String sqlStr="insert into GoodsCollection values('"+userName+"','"+goodsId+"')";
+        String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+        HttpTool.doHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GoodsDetialActivity.this,"连接服务器失败!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData=response.body().string();
+                boolean result = JsonTool.getStatus(responseData);
+                if(result)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GoodsDetialActivity.this,"收藏成功！",Toast.LENGTH_SHORT).show();
+                            collectionImg.setSelected(true);
+                            collectionText.setText("取消收藏");
+                        }
+                    });
+                }
+                else
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GoodsDetialActivity.this,"收藏失败！",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void deleteGoodsCollection()
+    {
+        String sqlStr="delete from GoodsCollection where goodsid='"+goodsId+"'";
+        String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+        Log.d(TAG, "删除字符"+url);
+        HttpTool.doHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GoodsDetialActivity.this,"连接服务器失败!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData=response.body().string();
+                boolean result = JsonTool.getStatus(responseData);
+                if(result)
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GoodsDetialActivity.this,"取消收藏成功！",Toast.LENGTH_SHORT).show();
+                            collectionImg.setSelected(false);
+                            collectionText.setText("收藏商品");
+                        }
+                    });
+                }
+                else
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GoodsDetialActivity.this,"取消收藏失败！",Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

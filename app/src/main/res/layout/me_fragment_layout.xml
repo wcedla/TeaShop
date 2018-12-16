@@ -97,6 +97,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/me_not_pay_layout"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -116,12 +117,13 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="未付款"
+                android:text="待付款"
                 android:textAlignment="center" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/me_no_mail_layout"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -147,6 +149,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/no_confirm_bill_layout"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -172,6 +175,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bill_finish_layout"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -205,6 +209,7 @@
         android:background="#b9b9b9" />
 
     <RelativeLayout
+        android:id="@+id/me_adress_edit"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 

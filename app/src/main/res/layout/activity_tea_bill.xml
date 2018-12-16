@@ -45,6 +45,25 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#FFFFFF"/>
+        android:background="#FFFFFF"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/bill_no_bill_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:text="未查找到订单！"/>
+
+    </LinearLayout>
 
 </LinearLayout>

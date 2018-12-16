@@ -311,7 +311,7 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
             buyMessageForAdd=buyMessage.getText().toString();
         }
         String billNoForAdd=String.valueOf(System.currentTimeMillis()*85+2);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date currentDate = new Date(System.currentTimeMillis());
         String buildTimeForAdd=format.format(currentDate);
         String sqlStr="insert into buybill values('"+adressNameForAdd+"','"+idStr+"','"+countStr+"','0.0','"+buyMessageForAdd+"','"+billNoForAdd+"','"+buildTimeForAdd+"','0')";
@@ -338,6 +338,7 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(ConfirmToBuyActivity.this,"提交成功!",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     });
                 }
@@ -356,8 +357,9 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        submitToBuy.performClick();
-        super.onDestroy();
+    public void onBackPressed() {
+        insetNewItem();
+        super.onBackPressed();
+
     }
 }
