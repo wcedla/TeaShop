@@ -41,7 +41,8 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="20dp"
                     android:gravity="end"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
+                    android:textColor="#f70909"
                     android:text="代付款"
                     android:textAlignment="textEnd" />
 
@@ -107,7 +108,7 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:id="@+id/a_g"
+                    android:id="@+id/bill_pay_now"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -120,13 +121,15 @@
                     android:text="立即付款"/>
 
                 <TextView
+                    android:id="@+id/bill_cancel_or_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/a_g"
+                    android:layout_toStartOf="@id/bill_pay_now"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:layout_marginEnd="20dp"
                     android:layout_centerVertical="true"
+                    android:textColor="#f70909"
                     android:text="取消订单"/>
 
             </RelativeLayout>

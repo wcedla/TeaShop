@@ -1,5 +1,6 @@
 package com.example.wcedla.selltea;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
@@ -51,6 +52,7 @@ public class TeaBIllActivity extends AppCompatActivity {
     int getGoodsIdIndex;//获取每个订单中包含的货物id集合的index
     int getSplitIdIndex;//每个订单中包含的货物id分解之后的id的集合，用~分割
     TeaBillShowAdapter teaBillShowAdapter;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,10 +227,75 @@ public class TeaBIllActivity extends AppCompatActivity {
     {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         billRecycler.setLayoutManager(linearLayoutManager);
-        teaBillShowAdapter=new TeaBillShowAdapter(TeaBIllActivity.this,allBillShowBeanList,linearLayoutManager);
+        teaBillShowAdapter=new TeaBillShowAdapter(TeaBIllActivity.this,allBillShowBeanList,linearLayoutManager,billOptions);
         billRecycler.setAdapter(teaBillShowAdapter);
 
     }
 
+    BillOptions billOptions=new BillOptions() {
+        @Override
+        public void cancel(String billNo, final int position) {
+            progressDialog = new ProgressDialog(TeaBIllActivity.this);
+            progressDialog.setTitle("取消订单");
+            progressDialog.setMessage("正在取消...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            String sqlStr="delete from buybill where billno='"+billNo+"'";
+            String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+            Log.d("wcedla", "取消地址"+url);
+            HttpTool.doHttpRequest(url, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.cancel();
+                            Toast.makeText(TeaBIllActivity.this,"连接服务器失败！",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseData=response.body().string();
+                    boolean result = JsonTool.getStatus(responseData);
+                    if(result)
+                    {
+                       runOnUiThread(new Runnable() {
+                           @Override
+                           public void run() {
+                               progressDialog.cancel();
+                               allBillShowBeanList.remove(position);
+                               teaBillShowAdapter.setNewData(allBillShowBeanList);
+                               Toast.makeText(TeaBIllActivity.this,"操作成功！",Toast.LENGTH_SHORT).show();
+                           }
+                       });
+                    }
+                    else
+                    {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.cancel();
+                                Toast.makeText(TeaBIllActivity.this,"操作失败！",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void pay(String billNo,int position) {
+
+        }
+    };
+
+    public interface BillOptions
+    {
+        public void cancel(String billNo,int position);
+
+        public void pay(String billNo,int position);
+    }
 
 }

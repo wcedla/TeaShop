@@ -31,7 +31,8 @@
         <activity android:name=".AdressManageActivity" />
         <activity android:name=".AdressEditActivity" />
         <activity android:name=".EditPasswordActivity" />
-        <activity android:name=".TeaBIllActivity"></activity>
+        <activity android:name=".TeaBIllActivity" />
+        <activity android:name=".BillDetialShowActivity"></activity>
     </application>
 
 </manifest>

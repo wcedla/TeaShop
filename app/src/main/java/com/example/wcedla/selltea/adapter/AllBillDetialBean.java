@@ -1,5 +1,7 @@
 package com.example.wcedla.selltea.adapter;
 
+import java.util.List;
+
 public class AllBillDetialBean {
 
     private String billId;
@@ -20,7 +22,9 @@ public class AllBillDetialBean {
 
     private String buyFlag;
 
-    public AllBillDetialBean(String billId,String billAdress,String buyId,String buyCount,String mailPrice,String buyMessage,String buyNo,String buyDate,String buyFlag)
+    private List<ConfirmToBuyBean> goodsBeanList;
+
+    public AllBillDetialBean(String billId,String billAdress,String buyId,String buyCount,String mailPrice,String buyMessage,String buyNo,String buyDate,String buyFlag,List<ConfirmToBuyBean> goodsBeanList)
     {
         this.billId=billId;
         this.billAdress=billAdress;
@@ -31,6 +35,7 @@ public class AllBillDetialBean {
         this.buyNo=buyNo;
         this.buyDate=buyDate;
         this.buyFlag=buyFlag;
+        this.goodsBeanList=goodsBeanList;
     }
 
     public String getBillId() {
@@ -103,5 +108,13 @@ public class AllBillDetialBean {
 
     public void setBuyFlag(String buyFlag) {
         this.buyFlag = buyFlag;
+    }
+
+    public List<ConfirmToBuyBean> getGoodsBeanList() {
+        return goodsBeanList;
+    }
+
+    public void setGoodsBeanList(List<ConfirmToBuyBean> goodsBeanList) {
+        this.goodsBeanList = goodsBeanList;
     }
 }
