@@ -2,7 +2,9 @@ package com.example.wcedla.selltea;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,20 +119,31 @@ public class AdressEditActivity extends AppCompatActivity {
         adressEditDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventBean.what = 1;
-//                newAdressInfo.add(adressId);
-//                newAdressInfo.add(adressEditName.getText().toString().trim());
-//                newAdressInfo.add(adressEditPhone.getText().toString().trim());
-//                newAdressInfo.add(adressEditText.getText().toString().trim());
-//                eventBean.obj = newAdressInfo;
-                progressDialog = new ProgressDialog(AdressEditActivity.this);
-                progressDialog.setTitle("保存地址信息");
-                progressDialog.setMessage("正在保存...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                String sqlStr="delete from adress where id="+adressId;
-                String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
-                applyChange(url);
+
+                final AlertDialog.Builder alertDialog=new AlertDialog.Builder(AdressEditActivity.this);
+                alertDialog.setTitle("删除警告！");
+                alertDialog.setMessage("确定删除吗？");
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        eventBean.what = 1;
+                        progressDialog = new ProgressDialog(AdressEditActivity.this);
+                        progressDialog.setTitle("保存地址信息");
+                        progressDialog.setMessage("正在保存...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        String sqlStr="delete from adress where id="+adressId;
+                        String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+                        applyChange(url);
+                    }
+                });
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
             }
         });
 

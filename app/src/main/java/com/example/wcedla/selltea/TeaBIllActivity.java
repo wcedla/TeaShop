@@ -1,9 +1,11 @@
 package com.example.wcedla.selltea;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -343,55 +346,73 @@ public class TeaBIllActivity extends AppCompatActivity {
 
     BillOptions billOptions=new BillOptions() {
         @Override
-        public void cancel(String billNo, final int position) {
-            progressDialog = new ProgressDialog(TeaBIllActivity.this);
-            progressDialog.setTitle("取消订单");
-            progressDialog.setMessage("正在取消...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-            String sqlStr="delete from buybill where billno='"+billNo+"'";
-            String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
-            Log.d("wcedla", "取消地址"+url);
-            HttpTool.doHttpRequest(url, new Callback() {
+        public void cancel(final String billNo, final int position) {
+
+            final AlertDialog.Builder alertDialog=new AlertDialog.Builder(TeaBIllActivity.this);
+            alertDialog.setTitle("删除警告！");
+            alertDialog.setMessage("确定删除吗？");
+            alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    runOnUiThread(new Runnable() {
+                public void onClick(DialogInterface dialog, int which) {
+                    progressDialog = new ProgressDialog(TeaBIllActivity.this);
+                    progressDialog.setTitle("取消订单");
+                    progressDialog.setMessage("正在取消...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    String sqlStr="delete from buybill where billno='"+billNo+"'";
+                    String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+                    Log.d("wcedla", "取消地址"+url);
+                    HttpTool.doHttpRequest(url, new Callback() {
                         @Override
-                        public void run() {
-                            progressDialog.cancel();
-                            Toast.makeText(TeaBIllActivity.this,"连接服务器失败！",Toast.LENGTH_SHORT).show();
+                        public void onFailure(Call call, IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.cancel();
+                                    Toast.makeText(TeaBIllActivity.this,"连接服务器失败！",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseData=response.body().string();
+                            boolean result = JsonTool.getStatus(responseData);
+                            if(result)
+                            {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.cancel();
+                                        allBillShowBeanList.remove(position);
+                                        teaBillShowAdapter.setNewData(allBillShowBeanList);
+                                        Toast.makeText(TeaBIllActivity.this,"操作成功！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.cancel();
+                                        Toast.makeText(TeaBIllActivity.this,"操作失败！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
                     });
                 }
-
+            });
+            alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String responseData=response.body().string();
-                    boolean result = JsonTool.getStatus(responseData);
-                    if(result)
-                    {
-                       runOnUiThread(new Runnable() {
-                           @Override
-                           public void run() {
-                               progressDialog.cancel();
-                               allBillShowBeanList.remove(position);
-                               teaBillShowAdapter.setNewData(allBillShowBeanList);
-                               Toast.makeText(TeaBIllActivity.this,"操作成功！",Toast.LENGTH_SHORT).show();
-                           }
-                       });
-                    }
-                    else
-                    {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.cancel();
-                                Toast.makeText(TeaBIllActivity.this,"操作失败！",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                public void onClick(DialogInterface dialog, int which) {
+
                 }
             });
+            alertDialog.show();
+
+
         }
 
         @Override

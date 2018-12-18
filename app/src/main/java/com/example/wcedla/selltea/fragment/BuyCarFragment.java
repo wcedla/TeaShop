@@ -3,12 +3,14 @@ package com.example.wcedla.selltea.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wcedla.selltea.AdressEditActivity;
 import com.example.wcedla.selltea.ConfirmToBuyActivity;
 import com.example.wcedla.selltea.R;
 import com.example.wcedla.selltea.adapter.BuyCarBean;
@@ -108,6 +111,11 @@ public class BuyCarFragment extends Fragment {
         submitToBuy=view.findViewById(R.id.calculate_price);
         totalPrice = view.findViewById(R.id.total_price);
         isSelectedMap.clear();
+        selectAllGoods.setSelected(false);
+        selectAllGoods.setSelected(false);
+        selectAllGoods.setPressed(false);
+        allSelectCheck.setChecked(false);
+        allSelectText.setText("全选");
         selectAllGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,29 +145,53 @@ public class BuyCarFragment extends Fragment {
         deleteSelected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(myActivity);
-                progressDialog.setTitle("删除购物车");
-                progressDialog.setMessage("正在删除...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                Set<Integer> selectedPosSet = isSelectedMap.keySet();
-                deleteIdList.clear();
-                deleteIndex=0;
-                for (Integer pos : selectedPosSet)
-                {
-                    deleteIdList.add(buyCarBeanList.get(pos).getId());
+
+                final AlertDialog.Builder alertDialog=new AlertDialog.Builder(myActivity);
+                alertDialog.setTitle("删除警告！");
+                alertDialog.setMessage("确定删除吗？");
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog = new ProgressDialog(myActivity);
+                        progressDialog.setTitle("删除购物车");
+                        progressDialog.setMessage("正在删除...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        Set<Integer> selectedPosSet = isSelectedMap.keySet();
+                        deleteIdList.clear();
+                        deleteIndex=0;
+                        for (Integer pos : selectedPosSet)
+                        {
+                            deleteIdList.add(buyCarBeanList.get(pos).getId());
 //                    int goodsId=buyCarBeanList.get(pos).getId();
-                    //Log.d(TAG, "删除点击！"+buyCarBeanList.get(pos).getId());
-                }
-                String sqlStr="delete from buycar where id="+deleteIdList.get(deleteIndex);
-                String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
-                deleteBuyCar(url);
+                            //Log.d(TAG, "删除点击！"+buyCarBeanList.get(pos).getId());
+                        }
+                        String sqlStr="delete from buycar where id="+deleteIdList.get(deleteIndex);
+                        String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/SqlExcuteServlet?sql=" + sqlStr;
+                        deleteBuyCar(url);
+                    }
+                });
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertDialog.show();
+
+
             }
         });
 
         submitToBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(isSelectedMap.size()>0)
+                {
+
+
+
                 String idStr="";
                 String countStr="";
                 Set<Integer> selectedPosSet = isSelectedMap.keySet();
@@ -175,6 +207,11 @@ public class BuyCarFragment extends Fragment {
                 confirmToBuyIntent.putExtras(bundle);
                 myActivity.startActivity(confirmToBuyIntent);
                 deleteSelected.performClick();
+                }
+                else
+                {
+                    Toast.makeText(myActivity,"暂未选择商品！",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
