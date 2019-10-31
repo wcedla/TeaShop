@@ -36,16 +36,15 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginFragment extends Fragment {
 
     Activity myActivity;
-    int number=0;
+    int number = 0;
     View view;
-    boolean logining=false;
+    boolean logining = false;
 
     @Override
     public void onAttach(Context context) {
 
         myActivity = (Activity) context;
-        if(getArguments()!=null)
-        {
+        if (getArguments() != null) {
             number = getArguments().getInt("number");  //获取参数
         }
         super.onAttach(context);
@@ -61,20 +60,19 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        view=getLayoutInflater().inflate(R.layout.frame_login_layout,container,false);
-        final TextView userNameTbx=view.findViewById(R.id.login_username);
-        final TextView pwdTbx=view.findViewById(R.id.login_pwd);
-        final Button loginBtn=view.findViewById(R.id.login_btn);
-        TextView forgetPassword=view.findViewById(R.id.forget_password_tbx);
-        TextView register=view.findViewById(R.id.register_tbx);
+        view = getLayoutInflater().inflate(R.layout.frame_login_layout, container, false);
+        final TextView userNameTbx = view.findViewById(R.id.login_username);
+        final TextView pwdTbx = view.findViewById(R.id.login_pwd);
+        final Button loginBtn = view.findViewById(R.id.login_btn);
+        TextView forgetPassword = view.findViewById(R.id.forget_password_tbx);
+        TextView register = view.findViewById(R.id.register_tbx);
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userNameTbx.setFocusable(false);
                 pwdTbx.setFocusable(false);
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null)
-                {
+                if (inputMethodManager != null) {
                     if (inputMethodManager.isActive()) {
                         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
@@ -87,13 +85,12 @@ public class LoginFragment extends Fragment {
                 userNameTbx.setFocusable(false);
                 pwdTbx.setFocusable(false);
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null)
-                {
+                if (inputMethodManager != null) {
                     if (inputMethodManager.isActive()) {
                         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
-                Intent registerIntent=new Intent(myActivity,RegisterActivity.class);
+                Intent registerIntent = new Intent(myActivity, RegisterActivity.class);
                 startActivity(registerIntent);
             }
         });
@@ -103,8 +100,7 @@ public class LoginFragment extends Fragment {
                 userNameTbx.setFocusable(false);
                 pwdTbx.setFocusable(false);
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null)
-                {
+                if (inputMethodManager != null) {
                     if (inputMethodManager.isActive()) {
                         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
@@ -118,7 +114,7 @@ public class LoginFragment extends Fragment {
                 userNameTbx.setFocusableInTouchMode(true);
                 userNameTbx.requestFocus();
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(userNameTbx,InputMethodManager.SHOW_FORCED);
+                inputMethodManager.showSoftInput(userNameTbx, InputMethodManager.SHOW_FORCED);
 
 
             }
@@ -145,55 +141,50 @@ public class LoginFragment extends Fragment {
                 pwdTbx.setFocusableInTouchMode(true);
                 pwdTbx.requestFocus();
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(pwdTbx,0);
+                inputMethodManager.showSoftInput(pwdTbx, 0);
 
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(logining)
-                {
-                    Snackbar.make(view,"请不要频繁登录！",Snackbar.LENGTH_SHORT).show();
+                if (logining) {
+                    Snackbar.make(view, "请不要频繁登录！", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                logining=true;
+                logining = true;
                 userNameTbx.setFocusable(false);
                 pwdTbx.setFocusable(false);
                 InputMethodManager inputMethodManager = (InputMethodManager) myActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager != null)
-                {
-                    if (inputMethodManager.isActive())
-                    {
+                if (inputMethodManager != null) {
+                    if (inputMethodManager.isActive()) {
                         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
-                if(!userNameTbx.getText().toString().equals("")&&!pwdTbx.getText().toString().equals(""))
-                {
-                    String url="http://192.168.191.1:8080/SqlServerMangerForAndroid/loginServlet?username="+userNameTbx.getText().toString()+"&password="+pwdTbx.getText().toString();
+                if (!userNameTbx.getText().toString().equals("") && !pwdTbx.getText().toString().equals("")) {
+                    String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/loginServlet?username=" + userNameTbx.getText().toString() + "&password=" + pwdTbx.getText().toString();
                     HttpTool.doHttpRequest(url, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             myActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Snackbar.make(view,"连接服务器失败！",Snackbar.LENGTH_SHORT).show();
-                                    logining=false;
+                                    Snackbar.make(view, "连接服务器失败！", Snackbar.LENGTH_SHORT).show();
+                                    logining = false;
                                 }
                             });
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            String responseData=response.body().string();
-                            boolean result=JsonTool.getStatus(responseData);
-                            if(result)
-                            {
+                            String responseData = response.body().string();
+                            boolean result = JsonTool.getStatus(responseData);
+                            if (result) {
                                 SharedPreferences.Editor loginEditor = myActivity.getSharedPreferences("login", MODE_PRIVATE).edit();
-                                loginEditor.putBoolean("isLogin",true);
-                                loginEditor.putString("username",userNameTbx.getText().toString());
+                                loginEditor.putBoolean("isLogin", true);
+                                loginEditor.putString("username", userNameTbx.getText().toString());
                                 loginEditor.apply();
-                                if(number>0) {
+                                if (number > 0) {
                                     myActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -202,48 +193,40 @@ public class LoginFragment extends Fragment {
                                         }
                                     });
 
-                                }
-                                else
-                                {
+                                } else {
                                     myActivity.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            LoginActivity.MyHandler handler=new LoginActivity.MyHandler((LoginActivity)myActivity);
+                                            LoginActivity.MyHandler handler = new LoginActivity.MyHandler((LoginActivity) myActivity);
                                             handler.sendEmptyMessage(1);
                                         }
                                     });
                                 }
-                               //Log.d(TAG, "成功");
                                 myActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Snackbar.make(view,"登录成功！",Snackbar.LENGTH_SHORT).show();
-                                        logining=false;
+                                        Snackbar.make(view, "登录成功！", Snackbar.LENGTH_SHORT).show();
+                                        logining = false;
                                     }
                                 });
-                            }
-                            else
-                            {
-                                //Log.d(TAG, "失败"+responseData);
+                            } else {
                                 myActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Snackbar.make(view,"账号或者密码错误，请重试！",Snackbar.LENGTH_SHORT).show();
-                                        logining=false;
+                                        Snackbar.make(view, "账号或者密码错误，请重试！", Snackbar.LENGTH_SHORT).show();
+                                        logining = false;
                                     }
                                 });
 
                             }
                         }
                     });
-                }
-                else
-                {
-                    Snackbar.make(view,"请输入账号密码！",Snackbar.LENGTH_SHORT).show();
-                    logining=false;
+                } else {
+                    Snackbar.make(view, "请输入账号密码！", Snackbar.LENGTH_SHORT).show();
+                    logining = false;
                 }
             }
         });
-        return  view;
+        return view;
     }
 }

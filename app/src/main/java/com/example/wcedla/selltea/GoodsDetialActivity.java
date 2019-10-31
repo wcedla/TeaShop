@@ -209,8 +209,6 @@ public class GoodsDetialActivity extends AppCompatActivity {
                             loadDetial();
                         }
                     });
-
-
                 }
             }
         });

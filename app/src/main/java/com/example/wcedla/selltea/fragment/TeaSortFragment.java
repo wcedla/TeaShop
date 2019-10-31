@@ -132,8 +132,6 @@ public class TeaSortFragment extends Fragment {
 
             }
         });
-
-
     }
 
     private void getTeaTypeList(String url)

@@ -200,11 +200,8 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
 
     private void getBuyInfo()
     {
-
-        //Log.d("wcedla", "查看"+buyCountList.size()+","+buyIdList.size());
         String url="http://192.168.191.1:8080/SqlServerMangerForAndroid/ConfirmToBuy?id="+buyIdList.get(getIndex);
         getBuyInfoFromServer(url);
-
     }
 
     private void getBuyInfoFromServer(String url)
@@ -224,7 +221,6 @@ public class ConfirmToBuyActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData=response.body().string();
                 searchShowDetialList=JsonTool.getShowResult(responseData);
-                //Log.d("wcedla", "获取正确"+searchShowDetialList.get(0).title);
                 if(searchShowDetialList.size()<1)
                 {
                     runOnUiThread(new Runnable() {

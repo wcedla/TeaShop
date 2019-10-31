@@ -1,12 +1,12 @@
 package com.example.wcedla.selltea.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +34,7 @@ public class RegisterFragment extends Fragment {
     Activity myActivity;
     int number;
     View view;
-    boolean isRegistering=false;
+    boolean isRegistering = false;
 
     @Override
     public void onAttach(Context context) {
@@ -53,15 +53,14 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_register_layout,container,false);
-        final ImageView imageView=view.findViewById(R.id.code);
-        Button registerBtn=view.findViewById(R.id.register_btn);
-        final EditText userNameTbx=view.findViewById(R.id.register_username);
-        final EditText pwdTbx=view.findViewById(R.id.register_pwd);
-        final EditText emailTbx=view.findViewById(R.id.register_email);
-        final EditText codeTbx=view.findViewById(R.id.register_code);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_register_layout, container, false);
+        final ImageView imageView = view.findViewById(R.id.code);
+        Button registerBtn = view.findViewById(R.id.register_btn);
+        final EditText userNameTbx = view.findViewById(R.id.register_username);
+        final EditText pwdTbx = view.findViewById(R.id.register_pwd);
+        final EditText emailTbx = view.findViewById(R.id.register_email);
+        final EditText codeTbx = view.findViewById(R.id.register_code);
 
 
         imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
@@ -69,128 +68,115 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                Log.d(TAG, "onCreateView: "+CodeUtils.getInstance().getCode());
+                Log.d(TAG, "onCreateView: " + CodeUtils.getInstance().getCode());
             }
         });
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isRegistering)
-                {
-                    Snackbar.make(view,"请不要频繁提交注册!",Snackbar.LENGTH_SHORT).show();
+                if (isRegistering) {
+                    Snackbar.make(view, "请不要频繁提交注册!", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                isRegistering=true;
-                String userName=userNameTbx.getText().toString();
-                String pwd=pwdTbx.getText().toString();
-                String email=emailTbx.getText().toString();
-                final String code=codeTbx.getText().toString().toLowerCase();
-                if(!userName.equals("") &&!pwd.equals("")&&!email.equals("")&&!code.equals(""))
-                {
-                    if(userName.length()<3)
-                    {
+                isRegistering = true;
+                String userName = userNameTbx.getText().toString();
+                String pwd = pwdTbx.getText().toString();
+                String email = emailTbx.getText().toString();
+                final String code = codeTbx.getText().toString().toLowerCase();
+                if (!userName.equals("") && !pwd.equals("") && !email.equals("") && !code.equals("")) {
+                    if (userName.length() < 3) {
                         myActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Snackbar.make(view,"输入的账号小于三个字符",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "输入的账号小于三个字符", Snackbar.LENGTH_SHORT).show();
                                 imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                isRegistering=false;
+                                isRegistering = false;
                             }
                         });
                         return;
                     }
-                    if(pwd.length()<6)
-                    {
+                    if (pwd.length() < 6) {
                         myActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Snackbar.make(view,"输入的密码小于六个字符",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "输入的密码小于六个字符", Snackbar.LENGTH_SHORT).show();
                                 imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                isRegistering=false;
+                                isRegistering = false;
                             }
                         });
                         return;
                     }
-                    if(!SystemTool.isEmail(email))
-                    {
+                    if (!SystemTool.isEmail(email)) {
                         myActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Snackbar.make(view,"输入的邮箱格式有误！",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "输入的邮箱格式有误！", Snackbar.LENGTH_SHORT).show();
                                 imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                isRegistering=false;
+                                isRegistering = false;
                             }
                         });
                         return;
                     }
-                    if(!code.equals(CodeUtils.getInstance().getCode().toLowerCase()))
-                    {
+                    if (!code.equals(CodeUtils.getInstance().getCode().toLowerCase())) {
                         myActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Snackbar.make(view,"验证码错误",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view, "验证码错误", Snackbar.LENGTH_SHORT).show();
                                 imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                isRegistering=false;
+                                isRegistering = false;
                             }
                         });
                         return;
                     }
-                    String url="http://192.168.191.1:8080/SqlServerMangerForAndroid/registerServlet?username="+userName+"&password="+pwd+"&email="+email;
+                    String url = "http://192.168.191.1:8080/SqlServerMangerForAndroid/registerServlet?username=" + userName + "&password=" + pwd + "&email=" + email;
                     HttpTool.doHttpRequest(url, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             myActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Snackbar.make(view,"连接服务器失败！",Snackbar.LENGTH_SHORT).show();
-                                    isRegistering=false;
+                                    Snackbar.make(view, "连接服务器失败！", Snackbar.LENGTH_SHORT).show();
+                                    isRegistering = false;
                                 }
                             });
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            String responseData=response.body().string();
-                            int result=JsonTool.getRegisterResult(responseData);
-                            Log.d(TAG, "注册结果"+result);
-                            if(result==0)
-                            {
+                            String responseData = response.body().string();
+                            int result = JsonTool.getRegisterResult(responseData);
+                            if (result == 0) {
                                 myActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Snackbar.make(view,"恭喜你，注册成功！",Snackbar.LENGTH_SHORT).show();
-                                        isRegistering=false;
+                                        Snackbar.make(view, "恭喜你，注册成功！", Snackbar.LENGTH_SHORT).show();
+                                        isRegistering = false;
                                     }
                                 });
-                            }
-                            else if(result==-1)
-                            {
+                            } else if (result == -1) {
                                 myActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Snackbar.make(view,"该用户名已被注册！",Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, "该用户名已被注册！", Snackbar.LENGTH_SHORT).show();
                                         imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                        isRegistering=false;
+                                        isRegistering = false;
                                     }
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 myActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Snackbar.make(view,"注册失败！",Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, "注册失败！", Snackbar.LENGTH_SHORT).show();
                                         imageView.setImageBitmap(CodeUtils.getInstance().createBitmap());
-                                        isRegistering=false;
+                                        isRegistering = false;
                                     }
                                 });
                             }
                         }
                     });
-                }else
-                {
-                    Snackbar.make(view,"请按要求填写相关信息!",Snackbar.LENGTH_SHORT).show();
-                    isRegistering=false;
+                } else {
+                    Snackbar.make(view, "请按要求填写相关信息!", Snackbar.LENGTH_SHORT).show();
+                    isRegistering = false;
                 }
             }
         });
